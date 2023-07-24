@@ -8,10 +8,6 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
-#permissions:
-#  id-token: write
-#  pages: write
-
 jobs:
   deploy-to-github-pages:
     runs-on: ubuntu-latest
@@ -33,11 +29,6 @@ jobs:
       run: trunk build --release --public-url /wasm_mini_demo_rust/
     - name: Optimize WASM
       run: find dist -name "*.wasm" -exec wasm-opt {} -o {} -Oz -c --dae --dce --rse -s 4 --vacuum \;
-    #- name: Patch base href
-    #  uses: SteveSandersonMS/ghaction-rewrite-base-href@v1.1.0
-    #  with:
-    #      html_path: 'dist/index.html'
-    #      base_href: '/wasm_mini_demo_rust/'
     - name: Add .nojekyll file
       run: touch dist/.nojekyll
     - name: Run tests
@@ -45,6 +36,5 @@ jobs:
     - name: Commit dist to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
         FOLDER: dist
