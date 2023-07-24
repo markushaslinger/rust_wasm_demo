@@ -30,14 +30,14 @@ jobs:
     - name: Cache
       uses: Swatinem/rust-cache@v2
     - name: Build
-      run: trunk build --release
+      run: trunk build --release --public-url /wasm_mini_demo_rust/
     - name: Optimize WASM
       run: find dist -name "*.wasm" -exec wasm-opt {} -o {} -Oz -c --dae --dce --rse -s 4 --vacuum \;
-    - name: Patch base href
-      uses: SteveSandersonMS/ghaction-rewrite-base-href@v1.1.0
-      with:
-          html_path: 'dist/index.html'
-          base_href: '/wasm_mini_demo_rust/'
+    #- name: Patch base href
+    #  uses: SteveSandersonMS/ghaction-rewrite-base-href@v1.1.0
+    #  with:
+    #      html_path: 'dist/index.html'
+    #      base_href: '/wasm_mini_demo_rust/'
     - name: Add .nojekyll file
       run: touch dist/.nojekyll
     - name: Run tests
